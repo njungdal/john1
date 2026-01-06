@@ -16,7 +16,7 @@
 
         body {
             font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #E8D5C4 0%, #D4B996 100%);
             min-height: 100vh;
             padding: 0;
             margin: 0;
@@ -35,7 +35,7 @@
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D4B996 0%, #A67C52 100%);
             color: white;
             padding: 20px;
             display: flex;
@@ -78,6 +78,22 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        /* Hero Image */
+        .hero-image {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 30px auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         /* Channel List */
         .channel-list {
             display: flex;
@@ -96,18 +112,22 @@
             cursor: pointer;
             transition: all 0.2s ease;
             border: 2px solid transparent;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: rgba(212, 185, 150, 0.3);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .channel-card:active {
             transform: scale(0.98);
-            background-color: #f8f9fa;
+            background-color: #FFF8F0;
+            border-color: #D4B996;
         }
 
         .channel-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D4B996 0%, #A67C52 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -145,7 +165,7 @@
             color: #333;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #D4B996;
         }
 
         .verses {
@@ -155,15 +175,15 @@
         }
 
         .verse {
-            background: #f8f9fa;
+            background: #FFF8F0;
             border-radius: 8px;
             padding: 15px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #D4B996;
         }
 
         .verse-number {
             display: inline-block;
-            background: #667eea;
+            background: #C9A976;
             color: white;
             font-weight: 700;
             font-size: 12px;
@@ -249,7 +269,7 @@
 
         .meditation-textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #D4B996;
         }
 
         .meditation-actions {
@@ -274,7 +294,7 @@
         }
 
         .btn-save {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D4B996 0%, #A67C52 100%);
             color: white;
         }
 
@@ -360,6 +380,11 @@
         <main class="main-content" id="mainContent">
             <!-- Channel List (Default View) -->
             <div class="channel-list" id="channelList">
+                <!-- Hero Image -->
+                <div class="hero-image">
+                    <img src="john.png" alt="요한일서">
+                </div>
+
                 <div class="channel-card" data-channel="chapter1">
                     <div class="channel-icon">1</div>
                     <div class="channel-info">
@@ -634,10 +659,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupChannelListeners() {
     const channelCards = document.querySelectorAll('.channel-card');
     channelCards.forEach(card => {
-        card.addEventListener('click', () => {
+        // 터치 이벤트와 클릭 이벤트 모두 처리
+        const handleInteraction = (e) => {
+            e.preventDefault();
             const channel = card.getAttribute('data-channel');
             navigateToChannel(channel);
-        });
+        };
+
+        // 터치 이벤트 (모바일)
+        card.addEventListener('touchend', handleInteraction, { passive: false });
+
+        // 클릭 이벤트 (데스크톱 및 백업)
+        card.addEventListener('click', handleInteraction);
     });
 }
 
@@ -718,9 +751,13 @@ function showChannelList() {
 
 // Setup back button
 function setupBackButton() {
-    backBtn.addEventListener('click', () => {
+    const handleBack = (e) => {
+        e.preventDefault();
         showChannelList();
-    });
+    };
+
+    backBtn.addEventListener('touchend', handleBack, { passive: false });
+    backBtn.addEventListener('click', handleBack);
 }
 
 // Setup meditation buttons
