@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>요한일서 성경통독</title>
+    <style>
+        /* Global Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .back-btn:active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Channel List */
+        .channel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .channel-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .channel-card:active {
+            transform: scale(0.98);
+            background-color: #f8f9fa;
+        }
+
+        .channel-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .channel-info {
+            flex: 1;
+        }
+
+        .channel-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .channel-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Bible Content */
+        .bible-content {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .content-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .verses {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .verse {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .verse-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 10px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .verse-text {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            font-size: 11pt;
+            line-height: 1.8;
+            color: #333;
+            display: inline;
+        }
+
+        /* Video Content */
+        .video-content {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .video-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            border: none;
+        }
+
+        .video-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* Meditation Content */
+        .meditation-content {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .meditation-editor {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .meditation-textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .meditation-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .meditation-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-clear {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+
+        .save-status {
+            text-align: center;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 6px;
+            min-height: 20px;
+        }
+
+        .save-status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .save-status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .channel-card {
+                padding: 15px;
+            }
+
+            .channel-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .channel-title {
+                font-size: 16px;
+            }
+
+            .channel-desc {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <button class="back-btn" id="backBtn" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <h1 class="header-title">요한일서 성경통독</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Channel List (Default View) -->
+            <div class="channel-list" id="channelList">
+                <div class="channel-card" data-channel="chapter1">
+                    <div class="channel-icon">1</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 1장</h2>
+                        <p class="channel-desc">생명의 말씀과 빛 가운데 행함</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter2">
+                    <div class="channel-icon">2</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 2장</h2>
+                        <p class="channel-desc">새 계명과 세상을 사랑하지 말라</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter3">
+                    <div class="channel-icon">3</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 3장</h2>
+                        <p class="channel-desc">하나님의 자녀와 서로 사랑함</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter4">
+                    <div class="channel-icon">4</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 4장</h2>
+                        <p class="channel-desc">하나님은 사랑이시라</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter5">
+                    <div class="channel-icon">5</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 5장</h2>
+                        <p class="channel-desc">믿음으로 세상을 이김</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="video">
+                    <div class="channel-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 설명</h2>
+                        <p class="channel-desc">바이블 프로젝트 영상</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="meditation">
+                    <div class="channel-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">나의 묵상</h2>
+                        <p class="channel-desc">나만의 묵상 노트</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bible Chapter Content -->
+            <div class="bible-content" id="bibleContent" style="display: none;">
+                <h2 class="content-title" id="contentTitle"></h2>
+                <div class="verses" id="verses"></div>
+            </div>
+
+            <!-- Video Content -->
+            <div class="video-content" id="videoContent" style="display: none;">
+                <h2 class="content-title">요한일서 설명</h2>
+                <p class="video-description">바이블 프로젝트의 요한일서 개요 영상입니다. (한글 자막 지원)</p>
+                <div class="video-wrapper">
+                    <iframe
+                        id="youtubeVideo"
+                        width="100%"
+                        height="315"
+                        src="https://www.youtube.com/embed/cMKPbDZhToo?cc_load_policy=1&cc_lang_pref=ko"
+                        title="요한일서 - 바이블 프로젝트"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <p>요한일서는 초대 교회에 보내는 편지로, 하나님은 사랑이시며 우리도 서로 사랑해야 한다는 메시지를 전합니다.</p>
+                    <p style="margin-top: 10px; font-size: 12px; color: #999;">영상 하단의 자막 버튼(CC)을 클릭하여 한글 자막을 켤 수 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- Meditation Content -->
+            <div class="meditation-content" id="meditationContent" style="display: none;">
+                <h2 class="content-title">나의 묵상</h2>
+                <div class="meditation-editor">
+                    <textarea
+                        id="meditationText"
+                        class="meditation-textarea"
+                        placeholder="오늘 읽은 말씀에 대한 묵상을 작성해보세요...&#10;&#10;- 이 말씀이 나에게 주는 의미는?&#10;- 오늘 실천할 수 있는 것은?&#10;- 기도 제목은?"></textarea>
+                    <div class="meditation-actions">
+                        <button class="btn btn-save" id="saveMeditation">저장</button>
+                        <button class="btn btn-clear" id="clearMeditation">초기화</button>
+                    </div>
+                    <div class="save-status" id="saveStatus"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+// 요한일서 개역개정 성경 본문 데이터 (data.js 내용 포함)
+const bibleData = {
+    chapter1: {
+        title: "요한일서 1장",
+        verses: [
+            { number: 1, text: "태초부터 있는 생명의 말씀에 관하여는 우리가 들은 바요 눈으로 본 바요 자세히 보고 우리의 손으로 만진 바라" },
+            { number: 2, text: "이 생명이 나타내신 바 된지라 이 영원한 생명을 우리가 보았고 증언하여 너희에게 전하노니 이는 아버지와 함께 계시다가 우리에게 나타내신 바 된 이시니라" },
+            { number: 3, text: "우리가 보고 들은 바를 너희에게도 전함은 너희로 우리와 사귐이 있게 하려 함이니 우리의 사귐은 아버지와 그의 아들 예수 그리스도와 더불어 누림이라" },
+            { number: 4, text: "우리가 이것을 씀은 우리의 기쁨이 충만하게 하려 함이라" },
+            { number: 5, text: "우리가 그에게서 듣고 너희에게 전하는 소식은 이것이니 곧 하나님은 빛이시라 그에게는 어둠이 조금도 없으시다는 것이니라" },
+            { number: 6, text: "만일 우리가 하나님과 사귐이 있다 하고 어둠에 행하면 거짓말을 하고 진리를 행하지 아니함이거니와" },
+            { number: 7, text: "그가 빛 가운데 계신 것 같이 우리도 빛 가운데 행하면 우리가 서로 사귐이 있고 그 아들 예수의 피가 우리를 모든 죄에서 깨끗하게 하실 것이요" },
+            { number: 8, text: "만일 우리가 죄가 없다고 말하면 스스로 속이고 또 진리가 우리 속에 있지 아니할 것이요" },
+            { number: 9, text: "만일 우리가 우리 죄를 자백하면 그는 미쁘시고 의로우사 우리 죄를 사하시며 우리를 모든 불의에서 깨끗하게 하실 것이요" },
+            { number: 10, text: "만일 우리가 범죄하지 아니하였다 하면 하나님을 거짓말하는 이로 만드는 것이니 또한 그의 말씀이 우리 속에 있지 아니하니라" }
+        ]
+    },
+    chapter2: {
+        title: "요한일서 2장",
+        verses: [
+            { number: 1, text: "나의 자녀들아 내가 이것을 너희에게 씀은 너희로 죄를 범하지 않게 하려 함이라 만일 누가 죄를 범하여도 아버지 앞에서 우리에게 대언자가 있으니 곧 의로우신 예수 그리스도시라" },
+            { number: 2, text: "그는 우리 죄를 위한 화목제물이니 우리만 위할 뿐 아니요 온 세상의 죄를 위하심이라" },
+            { number: 3, text: "우리가 그의 계명을 지키면 이로써 우리가 그를 아는 줄로 알 것이요" },
+            { number: 4, text: "그를 아노라 하고 그의 계명을 지키지 아니하는 자는 거짓말하는 자요 진리가 그 속에 있지 아니하되" },
+            { number: 5, text: "누구든지 그의 말씀을 지키는 자는 하나님의 사랑이 참으로 그 속에서 온전하게 되었나니 이로써 우리가 그의 안에 있는 줄을 아노라" },
+            { number: 6, text: "그의 안에 산다고 하는 자는 그가 행하시는 대로 자기도 행할지니라" },
+            { number: 7, text: "사랑하는 자들아 내가 새 계명을 너희에게 쓰는 것이 아니라 너희가 처음부터 가진 옛 계명이니 이 옛 계명은 너희가 들은 바 말씀이거니와" },
+            { number: 8, text: "다시 내가 너희에게 새 계명을 쓰노니 그에게와 너희에게도 참된 것이라 이는 어둠이 지나가고 참빛이 벌써 비침이니라" },
+            { number: 9, text: "빛 가운데 있다 하면서 그 형제를 미워하는 자는 지금까지 어둠에 있는 자요" },
+            { number: 10, text: "그의 형제를 사랑하는 자는 빛 가운데 거하여 자기 속에 거리낌이 없으나" },
+            { number: 11, text: "그의 형제를 미워하는 자는 어둠에 있고 또 어둠에 행하며 갈 곳을 알지 못하나니 이는 그 어둠이 그의 눈을 멀게 하였음이라" },
+            { number: 12, text: "자녀들아 내가 너희에게 쓰는 것은 너희 죄가 그의 이름으로 말미암아 사함을 받았음이요" },
+            { number: 13, text: "아비들아 내가 너희에게 쓰는 것은 너희가 태초부터 계신 이를 알았음이요 청년들아 내가 너희에게 쓰는 것은 너희가 악한 자를 이기었음이라" },
+            { number: 14, text: "아이들아 내가 너희에게 쓴 것은 너희가 아버지를 알았음이요 아비들아 내가 너희에게 쓴 것은 너희가 태초부터 계신 이를 알았음이요 청년들아 내가 너희에게 쓴 것은 너희가 강하고 하나님의 말씀이 너희 안에 거하시며 너희가 흉악한 자를 이기었음이라" },
+            { number: 15, text: "이 세상이나 세상에 있는 것들을 사랑하지 말라 누구든지 세상을 사랑하면 아버지의 사랑이 그 안에 있지 아니하니" },
+            { number: 16, text: "이는 세상에 있는 모든 것이 육신의 정욕과 안목의 정욕과 이생의 자랑이니 다 아버지께로부터 온 것이 아니요 세상으로부터 온 것이라" },
+            { number: 17, text: "이 세상도, 그 정욕도 지나가되 오직 하나님의 뜻을 행하는 자는 영원히 거하느니라" },
+            { number: 18, text: "아이들아 지금은 마지막 때라 적그리스도가 오리라는 말을 너희가 들은 것과 같이 지금도 많은 적그리스도가 일어났으니 그러므로 우리가 마지막 때인 줄 아노라" },
+            { number: 19, text: "그들이 우리에게서 나갔으나 우리에게 속하지 아니하였나니 만일 우리에게 속하였더라면 우리와 함께 거하였으려니와 그들이 나간 것은 다 우리에게 속하지 아니함을 나타내려 함이니라" },
+            { number: 20, text: "너희는 거룩하신 자에게서 기름 부음을 받고 모든 것을 아느니라" },
+            { number: 21, text: "내가 너희에게 쓰는 것은 너희가 진리를 알지 못하기 때문이 아니라 알기 때문이요 또 모든 거짓은 진리에서 나지 않기 때문이라" },
+            { number: 22, text: "거짓말하는 자가 누구냐 예수께서 그리스도이심을 부인하는 자가 아니냐 아버지와 아들을 부인하는 그가 적그리스도니" },
+            { number: 23, text: "아들을 부인하는 자에게는 또한 아버지가 없으되 아들을 시인하는 자에게는 아버지도 있느니라" },
+            { number: 24, text: "너희는 처음부터 들은 것을 너희 안에 거하게 하라 처음부터 들은 것이 너희 안에 거하면 너희가 아들과 아버지 안에 거하리라" },
+            { number: 25, text: "그가 우리에게 약속하신 것은 이것이니 곧 영원한 생명이니라" },
+            { number: 26, text: "너희를 미혹하는 자들에 관하여 내가 이것을 너희에게 썼노라" },
+            { number: 27, text: "너희는 주께 받은 바 기름 부음이 너희 안에 거하나니 아무도 너희를 가르칠 필요가 없고 오직 그의 기름 부음이 모든 것을 너희에게 가르치며 또 참되고 거짓이 없으니 너희를 가르치신 그대로 주 안에 거하라" },
+            { number: 28, text: "자녀들아 이제 그의 안에 거하라 이는 주께서 나타내신 바 되면 그가 강림하실 때에 우리로 담대함을 얻어 그 앞에서 부끄럽지 않게 하려 함이라" },
+            { number: 29, text: "너희가 그가 의로우신 줄을 알면 의를 행하는 자마다 그에게서 난 줄을 알리라" }
+        ]
+    },
+    chapter3: {
+        title: "요한일서 3장",
+        verses: [
+            { number: 1, text: "보라 아버지께서 어떠한 사랑을 우리에게 베푸사 하나님의 자녀라 일컬음을 받게 하셨는가, 우리가 그러하도다 그러므로 세상이 우리를 알지 못함은 그를 알지 못함이라" },
+            { number: 2, text: "사랑하는 자들아 우리가 지금은 하나님의 자녀라 장래에 어떻게 될지는 아직 나타나지 아니하였으나 그가 나타나시면 우리가 그와 같을 줄을 아는 것은 그의 참모습 그대로 볼 것이기 때문이니" },
+            { number: 3, text: "주를 향하여 이 소망을 가진 자마다 그의 깨끗하심과 같이 자기를 깨끗하게 하느니라" },
+            { number: 4, text: "죄를 짓는 자마다 불법을 행하나니 죄는 불법이라" },
+            { number: 5, text: "그가 우리 죄를 없애려고 나타나신 것을 너희가 아나니 그에게는 죄가 없느니라" },
+            { number: 6, text: "그 안에 거하는 자마다 범죄하지 아니하나니 범죄하는 자마다 그를 보지도 못하였고 그를 알지도 못하였느니라" },
+            { number: 7, text: "자녀들아 아무도 너희를 미혹하지 못하게 하라 의를 행하는 자는 그의 의로우심과 같이 의롭고" },
+            { number: 8, text: "죄를 짓는 자는 마귀에게 속하나니 마귀는 처음부터 범죄함이라 하나님의 아들이 나타나신 것은 마귀의 일을 멸하려 하심이라" },
+            { number: 9, text: "하나님께로부터 난 자마다 죄를 짓지 아니하나니 이는 하나님의 씨가 그의 속에 거함이요 그도 범죄하지 못하는 것은 하나님께로부터 났음이라" },
+            { number: 10, text: "이러므로 하나님의 자녀들과 마귀의 자녀들이 드러나나니 무릇 의를 행하지 아니하는 자나 또는 그 형제를 사랑하지 아니하는 자는 하나님께 속하지 아니하니라" },
+            { number: 11, text: "우리는 서로 사랑할지니 이는 너희가 처음부터 들은 소식이라" },
+            { number: 12, text: "가인 같이 하지 말라 그는 악한 자에게 속하여 그 아우를 죽였으니 어떤 이유로 죽였느냐 자기의 행위는 악하고 그의 아우의 행위는 의로움이라" },
+            { number: 13, text: "형제들아 세상이 너희를 미워하여도 이상히 여기지 말라" },
+            { number: 14, text: "우리는 형제를 사랑함으로 사망에서 옮겨 생명으로 들어간 줄을 알거니와 사랑하지 아니하는 자는 사망에 머물러 있느니라" },
+            { number: 15, text: "그 형제를 미워하는 자마다 살인하는 자니 살인하는 자마다 영생이 그 속에 거하지 아니하는 것을 너희가 아는 바라" },
+            { number: 16, text: "그가 우리를 위하여 목숨을 버리셨으니 우리가 이로써 사랑을 알고 우리도 형제들을 위하여 목숨을 버리는 것이 마땅하니라" },
+            { number: 17, text: "누가 이 세상의 재물을 가지고 형제의 궁핍함을 보고도 도와 줄 마음을 닫으면 하나님의 사랑이 어찌 그 속에 거하겠느냐" },
+            { number: 18, text: "자녀들아 우리가 말과 혀로만 사랑하지 말고 행함과 진실함으로 하자" },
+            { number: 19, text: "이로써 우리가 진리에 속한 줄을 알고 또 우리 마음을 주 앞에서 굳세게 하리니" },
+            { number: 20, text: "이는 우리 마음이 혹 우리를 책망할 일이 있어도 하나님은 우리 마음보다 크시고 모든 것을 아시기 때문이라" },
+            { number: 21, text: "사랑하는 자들아 만일 우리 마음이 우리를 책망할 것이 없으면 하나님 앞에서 담대함을 얻고" },
+            { number: 22, text: "무엇이든지 구하는 바를 그에게서 받나니 이는 우리가 그의 계명을 지키고 그 앞에서 기뻐하시는 것을 행함이라" },
+            { number: 23, text: "그의 계명은 이것이니 곧 그 아들 예수 그리스도의 이름을 믿고 그가 우리에게 주신 계명대로 서로 사랑할 것이니라" },
+            { number: 24, text: "그의 계명을 지키는 자는 주 안에 거하고 주는 그의 안에 거하시나니 우리에게 주신 성령으로 말미암아 그가 우리 안에 거하시는 줄을 우리가 아느니라" }
+        ]
+    },
+    chapter4: {
+        title: "요한일서 4장",
+        verses: [
+            { number: 1, text: "사랑하는 자들아 영을 다 믿지 말고 오직 영들이 하나님께 속하였나 분별하라 많은 거짓 선지자가 세상에 나왔음이라" },
+            { number: 2, text: "이로써 너희가 하나님의 영을 알지니 곧 예수 그리스도께서 육체로 오신 것을 시인하는 영마다 하나님께 속한 것이요" },
+            { number: 3, text: "예수를 시인하지 아니하는 영마다 하나님께 속한 것이 아니니 이것이 곧 적그리스도의 영이니라 오리라 한 말을 너희가 들었거니와 지금 벌써 세상에 있느니라" },
+            { number: 4, text: "자녀들아 너희는 하나님께 속하였고 또 그들을 이기었나니 이는 너희 안에 계신 이가 세상에 있는 자보다 크심이라" },
+            { number: 5, text: "그들은 세상에 속한 고로 세상에 속한 말을 하매 세상이 그들의 말을 듣느니라" },
+            { number: 6, text: "우리는 하나님께 속하였으니 하나님을 아는 자는 우리의 말을 듣고 하나님께 속하지 아니한 자는 우리의 말을 듣지 아니하나니 진리의 영과 미혹의 영을 이로써 아느니라" },
+            { number: 7, text: "사랑하는 자들아 우리가 서로 사랑하자 사랑은 하나님께 속한 것이니 사랑하는 자마다 하나님으로부터 나서 하나님을 알고" },
+            { number: 8, text: "사랑하지 아니하는 자는 하나님을 알지 못하나니 이는 하나님은 사랑이심이라" },
+            { number: 9, text: "하나님의 사랑이 우리에게 이렇게 나타난 바 되었으니 하나님이 자기의 독생자를 세상에 보내심은 그로 말미암아 우리를 살리려 하심이라" },
+            { number: 10, text: "사랑은 여기 있으니 우리가 하나님을 사랑한 것이 아니요 하나님이 우리를 사랑하사 우리 죄를 속하기 위하여 화목제물로 그 아들을 보내셨음이라" },
+            { number: 11, text: "사랑하는 자들아 하나님이 이같이 우리를 사랑하셨은즉 우리도 서로 사랑하는 것이 마땅하도다" },
+            { number: 12, text: "어느 때나 하나님을 본 사람이 없으되 만일 우리가 서로 사랑하면 하나님이 우리 안에 거하시고 그의 사랑이 우리 안에 온전히 이루어지느니라" },
+            { number: 13, text: "그의 성령을 우리에게 주시므로 우리가 그 안에 거하고 그가 우리 안에 거하시는 줄을 아느니라" },
+            { number: 14, text: "아버지가 아들을 세상의 구주로 보내신 것을 우리가 보았고 또 증언하노니" },
+            { number: 15, text: "누구든지 예수를 하나님의 아들이라 시인하면 하나님이 그의 안에 거하시고 그도 하나님 안에 거하느니라" },
+            { number: 16, text: "하나님이 우리를 사랑하시는 사랑을 우리가 알고 믿었노니 하나님은 사랑이시라 사랑 안에 거하는 자는 하나님 안에 거하고 하나님도 그의 안에 거하시느니라" },
+            { number: 17, text: "이로써 사랑이 우리에게 온전히 이루어진 것은 우리로 심판 날에 담대함을 가지게 하려 함이니 주께서 그러하심과 같이 우리도 이 세상에서 그러하니라" },
+            { number: 18, text: "사랑 안에 두려움이 없고 온전한 사랑이 두려움을 내쫓나니 두려움에는 형벌이 있음이라 두려워하는 자는 사랑 안에서 온전히 이루지 못하였느니라" },
+            { number: 19, text: "우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라" },
+            { number: 20, text: "누구든지 하나님을 사랑하노라 하고 그 형제를 미워하면 이는 거짓말하는 자니 보는 바 그 형제를 사랑하지 아니하는 자는 보지 못하는 바 하나님을 사랑할 수 없느니라" },
+            { number: 21, text: "우리가 이 계명을 주께 받았나니 하나님을 사랑하는 자는 또한 그 형제를 사랑할지니라" }
+        ]
+    },
+    chapter5: {
+        title: "요한일서 5장",
+        verses: [
+            { number: 1, text: "예수께서 그리스도이심을 믿는 자마다 하나님께로부터 난 자니 또한 낳으신 이를 사랑하는 자마다 그에게서 난 자를 사랑하느니라" },
+            { number: 2, text: "우리가 하나님을 사랑하고 그의 계명들을 지킬 때에 이로써 우리가 하나님의 자녀를 사랑하는 줄을 아느니라" },
+            { number: 3, text: "하나님을 사랑하는 것은 이것이니 우리가 그의 계명들을 지키는 것이라 그의 계명들은 무거운 것이 아니로다" },
+            { number: 4, text: "무릇 하나님께로부터 난 자마다 세상을 이기느니라 세상을 이기는 승리는 이것이니 우리의 믿음이니라" },
+            { number: 5, text: "예수께서 하나님의 아들이심을 믿는 자가 아니면 세상을 이기는 자가 누구냐" },
+            { number: 6, text: "이는 물과 피로 임하신 이시니 곧 예수 그리스도시라 물로만 아니요 물과 피로 임하셨고 증언하는 이는 성령이시니 성령은 진리니라" },
+            { number: 7, text: "증언하는 이가 셋이니" },
+            { number: 8, text: "성령과 물과 피라 또한 이 셋은 합하여 하나이니라" },
+            { number: 9, text: "만일 우리가 사람들의 증언을 받을진대 하나님의 증거는 더욱 크도다 하나님의 증거는 이것이니 그의 아들에 대하여 증언하신 것이니라" },
+            { number: 10, text: "하나님의 아들을 믿는 자는 자기 안에 증거가 있고 하나님을 믿지 아니하는 자는 하나님을 거짓말하는 자로 만드나니 이는 하나님께서 그 아들에 대하여 증언하신 증거를 믿지 아니하였음이라" },
+            { number: 11, text: "또 증거는 이것이니 하나님이 우리에게 영생을 주신 것과 이 생명이 그의 아들 안에 있는 그것이니라" },
+            { number: 12, text: "아들이 있는 자에게는 생명이 있고 하나님의 아들이 없는 자에게는 생명이 없느니라" },
+            { number: 13, text: "내가 하나님의 아들의 이름을 믿는 너희에게 이것을 쓰는 것은 너희로 하여금 너희에게 영생이 있음을 알게 하려 함이라" },
+            { number: 14, text: "그를 향하여 우리가 가진 바 담대함이 이것이니 그의 뜻대로 무엇을 구하면 들으심이라" },
+            { number: 15, text: "우리가 무엇이든지 구하는 바를 들으시는 줄을 안즉 우리가 그에게 구한 그것을 얻은 줄을 또한 아느니라" },
+            { number: 16, text: "누구든지 형제가 사망에 이르지 아니하는 죄 범하는 것을 보거든 구하라 그리하면 사망에 이르지 아니하는 범죄자들을 위하여 그에게 생명을 주시리라 사망에 이르는 죄가 있으니 이에 관하여 나는 구하라 하지 않노라" },
+            { number: 17, text: "모든 불의가 죄로되 사망에 이르지 아니하는 죄도 있도다" },
+            { number: 18, text: "하나님께로부터 난 자는 다 범죄하지 아니하는 줄을 우리가 아노라 하나님께로부터 나신 자가 그를 지키시매 악한 자가 그를 만지지도 못하느니라" },
+            { number: 19, text: "또 아는 것은 우리는 하나님께 속하고 온 세상은 악한 자 안에 처한 것이며" },
+            { number: 20, text: "또 아는 것은 하나님의 아들이 이르러 우리에게 지각을 주사 우리로 참된 자를 알게 하신 것과 또한 우리가 참된 자 곧 그의 아들 예수 그리스도 안에 있는 것이니 그는 참 하나님이시요 영생이시라" },
+            { number: 21, text: "자녀들아 너희 자신을 지켜 우상에게서 멀리하라" }
+        ]
+    }
+};
+
+// DOM Elements
+const backBtn = document.getElementById('backBtn');
+const channelList = document.getElementById('channelList');
+const bibleContent = document.getElementById('bibleContent');
+const videoContent = document.getElementById('videoContent');
+const meditationContent = document.getElementById('meditationContent');
+const contentTitle = document.getElementById('contentTitle');
+const verses = document.getElementById('verses');
+const meditationText = document.getElementById('meditationText');
+const saveMeditation = document.getElementById('saveMeditation');
+const clearMeditation = document.getElementById('clearMeditation');
+const saveStatus = document.getElementById('saveStatus');
+
+// Current view state
+let currentView = 'channelList';
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', () => {
+    setupChannelListeners();
+    setupBackButton();
+    setupMeditationButtons();
+    loadMeditation();
+});
+
+// Setup channel card listeners
+function setupChannelListeners() {
+    const channelCards = document.querySelectorAll('.channel-card');
+    channelCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const channel = card.getAttribute('data-channel');
+            navigateToChannel(channel);
+        });
+    });
+}
+
+// Navigate to a specific channel
+function navigateToChannel(channel) {
+    hideAllContent();
+    backBtn.style.display = 'flex';
+
+    if (channel.startsWith('chapter')) {
+        showBibleChapter(channel);
+        currentView = 'bible';
+    } else if (channel === 'video') {
+        showVideo();
+        currentView = 'video';
+    } else if (channel === 'meditation') {
+        showMeditation();
+        currentView = 'meditation';
+    }
+
+    window.scrollTo(0, 0);
+}
+
+// Show Bible chapter content
+function showBibleChapter(chapterKey) {
+    const chapterData = bibleData[chapterKey];
+    if (!chapterData) return;
+
+    contentTitle.textContent = chapterData.title;
+    verses.innerHTML = '';
+
+    chapterData.verses.forEach(verse => {
+        const verseElement = document.createElement('div');
+        verseElement.className = 'verse';
+
+        const verseNumber = document.createElement('span');
+        verseNumber.className = 'verse-number';
+        verseNumber.textContent = verse.number;
+
+        const verseText = document.createElement('span');
+        verseText.className = 'verse-text';
+        verseText.textContent = verse.text;
+
+        verseElement.appendChild(verseNumber);
+        verseElement.appendChild(verseText);
+        verses.appendChild(verseElement);
+    });
+
+    bibleContent.style.display = 'block';
+}
+
+// Show video content
+function showVideo() {
+    videoContent.style.display = 'block';
+}
+
+// Show meditation content
+function showMeditation() {
+    meditationContent.style.display = 'block';
+    loadMeditation();
+}
+
+// Hide all content sections
+function hideAllContent() {
+    channelList.style.display = 'none';
+    bibleContent.style.display = 'none';
+    videoContent.style.display = 'none';
+    meditationContent.style.display = 'none';
+}
+
+// Show channel list
+function showChannelList() {
+    hideAllContent();
+    channelList.style.display = 'flex';
+    backBtn.style.display = 'none';
+    currentView = 'channelList';
+    window.scrollTo(0, 0);
+}
+
+// Setup back button
+function setupBackButton() {
+    backBtn.addEventListener('click', () => {
+        showChannelList();
+    });
+}
+
+// Setup meditation buttons
+function setupMeditationButtons() {
+    saveMeditation.addEventListener('click', () => {
+        saveMeditationToStorage();
+    });
+
+    clearMeditation.addEventListener('click', () => {
+        if (confirm('묵상 내용을 초기화하시겠습니까?')) {
+            meditationText.value = '';
+            localStorage.removeItem('meditation');
+            showSaveStatus('묵상 내용이 초기화되었습니다.', 'success');
+        }
+    });
+}
+
+// Save meditation to localStorage
+function saveMeditationToStorage() {
+    const text = meditationText.value;
+    try {
+        localStorage.setItem('meditation', text);
+        const now = new Date();
+        const timeString = now.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        showSaveStatus(`저장되었습니다 (${timeString})`, 'success');
+    } catch (error) {
+        console.error('Failed to save meditation:', error);
+        showSaveStatus('저장에 실패했습니다.', 'error');
+    }
+}
+
+// Load meditation from localStorage
+function loadMeditation() {
+    try {
+        const savedText = localStorage.getItem('meditation');
+        if (savedText) {
+            meditationText.value = savedText;
+        }
+    } catch (error) {
+        console.error('Failed to load meditation:', error);
+    }
+}
+
+// Show save status message
+function showSaveStatus(message, type) {
+    saveStatus.textContent = message;
+    saveStatus.className = `save-status ${type}`;
+    setTimeout(() => {
+        saveStatus.textContent = '';
+        saveStatus.className = 'save-status';
+    }, 3000);
+}
+
+// Auto-save meditation every 30 seconds
+setInterval(() => {
+    if (currentView === 'meditation' && meditationText.value.trim()) {
+        const currentText = meditationText.value;
+        const savedText = localStorage.getItem('meditation');
+        if (currentText !== savedText) {
+            try {
+                localStorage.setItem('meditation', currentText);
+                console.log('Auto-saved meditation');
+            } catch (error) {
+                console.error('Failed to auto-save meditation:', error);
+            }
+        }
+    }
+}, 30000);
+    </script>
+</body>
+</html>

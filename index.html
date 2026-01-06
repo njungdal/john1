@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>요한일서 성경통독</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <button class="back-btn" id="backBtn" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <h1 class="header-title">요한일서 성경통독</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Channel List (Default View) -->
+            <div class="channel-list" id="channelList">
+                <div class="channel-card" data-channel="chapter1">
+                    <div class="channel-icon">1</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 1장</h2>
+                        <p class="channel-desc">생명의 말씀과 빛 가운데 행함</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter2">
+                    <div class="channel-icon">2</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 2장</h2>
+                        <p class="channel-desc">새 계명과 세상을 사랑하지 말라</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter3">
+                    <div class="channel-icon">3</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 3장</h2>
+                        <p class="channel-desc">하나님의 자녀와 서로 사랑함</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter4">
+                    <div class="channel-icon">4</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 4장</h2>
+                        <p class="channel-desc">하나님은 사랑이시라</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="chapter5">
+                    <div class="channel-icon">5</div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 5장</h2>
+                        <p class="channel-desc">믿음으로 세상을 이김</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="video">
+                    <div class="channel-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">요한일서 설명</h2>
+                        <p class="channel-desc">바이블 프로젝트 영상</p>
+                    </div>
+                </div>
+
+                <div class="channel-card" data-channel="meditation">
+                    <div class="channel-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </div>
+                    <div class="channel-info">
+                        <h2 class="channel-title">나의 묵상</h2>
+                        <p class="channel-desc">나만의 묵상 노트</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bible Chapter Content -->
+            <div class="bible-content" id="bibleContent" style="display: none;">
+                <h2 class="content-title" id="contentTitle"></h2>
+                <div class="verses" id="verses"></div>
+            </div>
+
+            <!-- Video Content -->
+            <div class="video-content" id="videoContent" style="display: none;">
+                <h2 class="content-title">요한일서 설명</h2>
+                <p class="video-description">바이블 프로젝트의 요한일서 개요 영상입니다. (한글 자막 지원)</p>
+                <div class="video-wrapper">
+                    <iframe
+                        id="youtubeVideo"
+                        width="100%"
+                        height="315"
+                        src="https://www.youtube.com/embed/cMKPbDZhToo?cc_load_policy=1&cc_lang_pref=ko"
+                        title="요한일서 - 바이블 프로젝트"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <p>요한일서는 초대 교회에 보내는 편지로, 하나님은 사랑이시며 우리도 서로 사랑해야 한다는 메시지를 전합니다.</p>
+                    <p style="margin-top: 10px; font-size: 12px; color: #999;">영상 하단의 자막 버튼(CC)을 클릭하여 한글 자막을 켤 수 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- Meditation Content -->
+            <div class="meditation-content" id="meditationContent" style="display: none;">
+                <h2 class="content-title">나의 묵상</h2>
+                <div class="meditation-editor">
+                    <textarea
+                        id="meditationText"
+                        class="meditation-textarea"
+                        placeholder="오늘 읽은 말씀에 대한 묵상을 작성해보세요...&#10;&#10;- 이 말씀이 나에게 주는 의미는?&#10;- 오늘 실천할 수 있는 것은?&#10;- 기도 제목은?"></textarea>
+                    <div class="meditation-actions">
+                        <button class="btn btn-save" id="saveMeditation">저장</button>
+                        <button class="btn btn-clear" id="clearMeditation">초기화</button>
+                    </div>
+                    <div class="save-status" id="saveStatus"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
